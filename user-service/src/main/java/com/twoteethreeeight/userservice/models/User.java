@@ -1,0 +1,33 @@
+package com.twoteethreeeight.userservice.models;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("user")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
+    @Id
+    private ObjectId _id;
+
+    @NotBlank(message = "Name can not be blank.")
+    private String fullName;
+
+    @Email(message = "Email is invalid.")
+    private String email;
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must contains ten digits.")
+    private String phone;
+
+    private String role;
+
+    private String codeTmp;
+}
