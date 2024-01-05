@@ -9,4 +9,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<User> getUserById(ObjectId objectId);
     List<User> getAllUser();
+
+    /*This function is just for create test User and not need to reuse*/
+    List<User> createTestUser();
 }

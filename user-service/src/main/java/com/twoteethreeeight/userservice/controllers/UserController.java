@@ -22,4 +22,10 @@ public class UserController {
         return new ResponseEntity<List<User>>(userService.getAllUser(), HttpStatus.OK);
     }
 
+    /*This function is just for create test User and not need to reuse*/
+    @GetMapping("createTestUser")
+    public ResponseEntity<List<User>> createTestUser(){
+        return new ResponseEntity<List<User>>(userService.createTestUser(), HttpStatus.OK);
+    }
+
 }
