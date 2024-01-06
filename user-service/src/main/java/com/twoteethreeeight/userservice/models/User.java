@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("user")
@@ -21,6 +22,7 @@ public class User {
     @NotBlank(message = "Name can not be blank.")
     private String fullName;
 
+    @Indexed(unique = true)
     @Email(message = "Email is invalid.")
     private String email;
 
