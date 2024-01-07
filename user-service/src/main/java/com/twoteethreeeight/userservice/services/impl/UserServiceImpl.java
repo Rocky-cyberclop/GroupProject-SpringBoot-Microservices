@@ -1,10 +1,13 @@
 package com.twoteethreeeight.userservice.services.impl;
 
+import com.twoteethreeeight.userservice.config.JWTTokenUtil;
 import com.twoteethreeeight.userservice.models.User;
 import com.twoteethreeeight.userservice.repositories.UserRepository;
+import com.twoteethreeeight.userservice.services.CodeTmpService;
 import com.twoteethreeeight.userservice.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,47 +16,117 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Override
-    public Optional<User> getUserById(ObjectId objectId){
-        return userRepository.findById(objectId);
-    }
+	@Autowired
+	private CodeTmpService codeTmpService;
 
-    @Override
-    public List<User> getAllUser(){
-        return userRepository.findAll();
-    }
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    /*This function is just for create test User and not need to reuse*/
-    @Override
-    public List<User> createTestUser() {
-        List<User> users = new ArrayList<>();
-        User user1 = new User();
-        user1.setFullName("Tran Anh Hao");
-        user1.setEmail("rockyoperation@gmail.com");
-        user1.setPhone("0355669359");
-        user1.setRole("User");
-        user1.setCodeTmp("adc");
-        users.add(user1);
-        User user2 = new User();
-        user2.setFullName("Nguyen Tri Thuc");
-        user2.setEmail("trithuc0416@gmail.com");
-        user2.setPhone("0355611359");
-        user2.setRole("User");
-        user2.setCodeTmp("abc");
-        users.add(user2);
-        User user3 = new User();
-        user3.setFullName("Thuc Tri Nguyen");
-        user3.setEmail("thucb2005736@student.ctu.edu.vn");
-        user3.setPhone("0355611322");
-        user3.setRole("User");
-        user3.setCodeTmp("cab");
-        users.add(user3);
+	@Autowired
+	private JWTTokenUtil jwtTokenUtil;
 
+	@Override
+	public Optional<User> getUserById(ObjectId objectId) {
+		return userRepository.findById(objectId);
+	}
 
-        userRepository.saveAll(users);
-        return users;
-    }
+	@Override
+	public List<User> getAllUser() {
+		return userRepository.findAll();
+	}
+
+	/* This function is just for create test User and not need to reuse */
+	@Override
+	public List<User> createTestUser() {
+		List<User> users = new ArrayList<>();
+		User user1 = new User();
+		user1.setFullName("Tran Anh Hao");
+		user1.setEmail("rockyoperation@gmail.com");
+		user1.setPhone("0355669359");
+		user1.setRole("User");
+		user1.setCodeTmp("adc");
+		users.add(user1);
+		User user2 = new User();
+		user2.setFullName("Nguyen Tri Thuc");
+		user2.setEmail("trithuc0416@gmail.com");
+		user2.setPhone("0355611359");
+		user2.setRole("User");
+		user2.setCodeTmp("abc");
+		users.add(user2);
+		User user3 = new User();
+		user3.setFullName("Thuc Tri Nguyen");
+		user3.setEmail("thucb2005736@student.ctu.edu.vn");
+		user3.setPhone("0355611322");
+		user3.setRole("User");
+		user3.setCodeTmp("cab");
+		users.add(user3);
+
+		userRepository.saveAll(users);
+		return users;
+	}
+
+	@Override
+	public String loginUser(String email, String responseCode) {
+		User user = userRepository.findByEmail(email);
+
+		if (user != null && codeTmpService.validateCode(email, responseCode)) {
+			return jwtTokenUtil.generateToken(email);
+		}
+		return null;
+	}
+
+	@Override
+	public String registerUser(User user, String responseCode) {
+		String email = user.getEmail();
+		if (codeTmpService.validateCode(email, responseCode)) {
+			if (userRepository.existsByEmail(user.getEmail())) {
+				return "Email already exists";
+			}
+			user.setRole("User");
+			userRepository.save(user);
+			return "Register successfully";
+		}
+		return "The authentication code is incorrect or expired ";
+	}
+
+	@Override
+	public User Authenticate(String token) {
+
+		if (token != null && token.startsWith("Bearer ")) {
+			token = token.substring(7);
+		}
+		String email = jwtTokenUtil.getUsernameFromToken(token);
+		User user = userRepository.findByEmail(email);
+		if (user != null) {
+			return user;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public String updateUserByEmail(String responeCode, String email, User infoEdit) {
+		User user = userRepository.findByEmail(email);
+
+		if (user != null) {
+			if (!codeTmpService.validateCode(email, responeCode)) {
+				return "The authentication code is incorrect or expired";
+			}
+			// khong cho phep thay doi email
+			if (!user.getEmail().equals(infoEdit.getEmail())) {
+				return "Changing email is not allowed";
+			}
+			user.setFullName(infoEdit.getFullName());
+			user.setPhone(infoEdit.getPhone());
+			userRepository.save(user);
+			return "Edit user successfully";
+
+		} else {
+			return "User not found";
+		}
+	}
+
 }
