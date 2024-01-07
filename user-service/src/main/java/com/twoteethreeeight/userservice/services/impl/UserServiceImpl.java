@@ -1,5 +1,6 @@
 package com.twoteethreeeight.userservice.services.impl;
 
+import com.twoteethreeeight.userservice.models.CodeAuthenticate;
 import com.twoteethreeeight.userservice.models.User;
 import com.twoteethreeeight.userservice.repositories.UserRepository;
 import com.twoteethreeeight.userservice.services.UserService;
@@ -35,21 +36,24 @@ public class UserServiceImpl implements UserService {
         user1.setEmail("rockyoperation@gmail.com");
         user1.setPhone("0355669359");
         user1.setRole("User");
-        user1.setCodeTmp("adc");
+        user1.setCodeAuthenticate(new CodeAuthenticate());
+        user1.setIsRegister(false);
         users.add(user1);
         User user2 = new User();
         user2.setFullName("Nguyen Tri Thuc");
         user2.setEmail("trithuc0416@gmail.com");
         user2.setPhone("0355611359");
         user2.setRole("User");
-        user2.setCodeTmp("abc");
+        user2.setCodeAuthenticate(new CodeAuthenticate());
+        user2.setIsRegister(false);
         users.add(user2);
         User user3 = new User();
         user3.setFullName("Thuc Tri Nguyen");
         user3.setEmail("thucb2005736@student.ctu.edu.vn");
         user3.setPhone("0355611322");
         user3.setRole("User");
-        user3.setCodeTmp("cab");
+        user3.setCodeAuthenticate(new CodeAuthenticate());
+        user3.setIsRegister(false);
         users.add(user3);
 
 
