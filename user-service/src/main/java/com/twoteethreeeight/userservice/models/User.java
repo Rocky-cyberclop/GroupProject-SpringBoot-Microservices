@@ -31,5 +31,7 @@ public class User {
 
     private String role;
 
-    private String codeTmp;
+    private CodeAuthenticate codeAuthenticate;
+
+    private Boolean isRegister;
 }
