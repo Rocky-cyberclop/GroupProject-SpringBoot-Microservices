@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		user3.setCodeAuthenticate(new CodeAuthenticate());
 		user3.setIsRegister(false);
 		users.add(user3);
-		
+
 		userRepository.saveAll(users);
 		return users;
 	}
