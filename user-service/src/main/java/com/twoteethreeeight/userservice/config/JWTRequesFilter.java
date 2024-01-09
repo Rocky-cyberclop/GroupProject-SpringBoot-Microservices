@@ -13,7 +13,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
+import com.twoteethreeeight.userservice.models.User;
+import com.twoteethreeeight.userservice.repositories.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,8 +24,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JWTRequesFilter extends OncePerRequestFilter{
 
+	
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private UserRepository userRepository;
 	
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
@@ -40,11 +42,11 @@ public class JWTRequesFilter extends OncePerRequestFilter{
 			return;
 		}
 		String jwtToken = requesTokenHeader.split(" ")[1].trim();
-		String usernam = jwtTokenUtil.getUsernameFromToken(jwtToken);
-		UserDetails userValObject =  userDetailsService.loadUserByUsername(usernam);
+		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		User user = userRepository.findByEmail(username);
 		
-		if (jwtTokenUtil.validateToken(jwtToken, userValObject)) {
-		    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userValObject, null, userValObject.getAuthorities());
+		if (jwtTokenUtil.validateToken(jwtToken, user)) {
+		    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null);
 		    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 		} else {

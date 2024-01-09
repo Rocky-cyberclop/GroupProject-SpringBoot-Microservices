@@ -11,25 +11,26 @@ import com.twoteethreeeight.userservice.Dto.MailStructure;
 
 @Service
 public class MailService {
-	
-	@Autowired
-	private JavaMailSender mailSender;
-	
-	@Value("$(spring.mail.username)")
-	private String mailFrom;
-	
-	@Autowired
-	private CodeTmpService codeTmpService;
 
-	public void sendMail(String mail, MailStructure mailStructure) {
-		// TODO Auto-generated method stub
-		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-		simpleMailMessage.setFrom(mailFrom);
-		simpleMailMessage.setSubject("Your Valid Code");
-		simpleMailMessage.setText(codeTmpService.genarateCodeTmp(mail));
-		simpleMailMessage.setTo(mail);
-		
-		mailSender.send(simpleMailMessage);
-	}
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Value("$(spring.mail.username)")
+    private String mailFrom;
+
+    @Autowired
+    private CodeTmpService codeTmpService;
+
+    public void sendMail(String mail) {
+        // TODO Auto-generated method stub
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(mailFrom);
+        simpleMailMessage.setSubject("Your Valid Code");
+        String generatedCode = codeTmpService.generateCodeTmp(mail);
+        simpleMailMessage.setText(generatedCode + "\nAuthenticate Code will be expired after 5 minutes");
+        simpleMailMessage.setTo(mail);
+
+        mailSender.send(simpleMailMessage);
+    }
 
 }

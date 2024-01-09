@@ -1,5 +1,6 @@
 package com.twoteethreeeight.userservice.services.impl;
 
+import com.twoteethreeeight.userservice.Dto.ProfileDto;
 import com.twoteethreeeight.userservice.models.CodeAuthenticate;
 import com.twoteethreeeight.userservice.config.JWTTokenUtil;
 import com.twoteethreeeight.userservice.models.User;
@@ -113,7 +114,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String updateUserByEmail(String responeCode, String email, User infoEdit) {
+	public String updateUserByEmail(String responeCode, ProfileDto infoEdit) {
+		String email = infoEdit.getEmail();
 		User user = userRepository.findByEmail(email);
 
 		if (user != null) {

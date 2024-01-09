@@ -10,13 +10,7 @@ import com.twoteethreeeight.userservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -75,21 +69,25 @@ public class UserController {
 	}
 
 	@GetMapping("info")
-	public ResponseEntity<?> getUserInfo(@RequestHeader(name = "Authorization") String token) {
-		User user = userService.Authenticate(token);
-		if (user != null) {
-			ProfileDto profileDto = new ProfileDto(user.getFullName(), user.getEmail(), user.getPhone());
-			return ResponseEntity.ok(profileDto);
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	public ResponseEntity<ProfileDto> getUserInfo(@RequestHeader(name = "Authorization") String token) {
+		if (token != null && token.startsWith("Bearer ")) {
+			token = token.substring(7);
 		}
+		String email = jwtTokenUtil.getUsernameFromToken(token);
+		User user = userRepository.findByEmail(email);
+			ProfileDto profileDto = new ProfileDto();
+			profileDto.setEmail(user.getEmail());
+			profileDto.setFullName(user.getFullName());
+			profileDto.setPhone(user.getPhone());
+//			return ResponseEntity.ok(user);
+			return new ResponseEntity<ProfileDto>(profileDto, HttpStatus.OK);
 	}
 
-	@PostMapping("edit")
-	public ResponseEntity<String> updateUserByEmail(@RequestParam String responseCode, @RequestParam String email,
-			@RequestBody User infoEdit) {
+	@PostMapping("edit/{responseCode}")
+	public ResponseEntity<String> updateUserByEmail(@PathVariable String responseCode,
+			@RequestBody ProfileDto infoEdit) {
 
-		String result = userService.updateUserByEmail(responseCode, email, infoEdit);
+		String result = userService.updateUserByEmail(responseCode, infoEdit);
 
 		switch (result) {
 		case "Edit user successfully":
