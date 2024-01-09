@@ -32,12 +32,12 @@ public class SecurityConfig {
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 				})
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/", "public", "/api/**", "/api/registration/**","user/**", "user/login/**", "/403", "/css",
+						.requestMatchers("/", "public", "/api/**","send/**", "/api/registration/**","user/**", "user/login/**", "/403", "/css",
 								"/images/**")
 						.permitAll().requestMatchers("/registration", "/webjars/**").permitAll()
 						.requestMatchers(HttpMethod.GET).permitAll().anyRequest().authenticated());
-//		 http.addFilterBefore(jwtRequesFilter,
-//		 UsernamePasswordAuthenticationFilter.class);
+		 http.addFilterBefore(jwtRequesFilter,
+		 UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
