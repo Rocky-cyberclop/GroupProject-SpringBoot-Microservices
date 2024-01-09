@@ -70,10 +70,10 @@ public class JWTTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
     }
-    public boolean validateToken(String token, UserDetails userValObject) {
+    public boolean validateToken(String token, User user) {
         try {
             final String tokenUsername = getUsernameFromToken(token);
-            if (tokenUsername.equals(userValObject.getUsername()) && !isTokenExpired(token)) {
+            if (tokenUsername.equals(user.getEmail()) && !isTokenExpired(token)) {
                 return true;
             }
         } catch (ExpiredJwtException e) {

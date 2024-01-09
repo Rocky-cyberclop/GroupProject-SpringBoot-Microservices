@@ -1,5 +1,6 @@
 package com.twoteethreeeight.userservice.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,10 +13,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Autowired
+	private JWTRequesFilter jwtRequesFilter;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -31,8 +36,8 @@ public class SecurityConfig {
 								"/images/**")
 						.permitAll().requestMatchers("/registration", "/webjars/**").permitAll()
 						.requestMatchers(HttpMethod.GET).permitAll().anyRequest().authenticated());
-		// http.addFilterBefore(jwtrequesFilter,
-		// UsernamePasswordAuthenticationFilter.class);
+//		 http.addFilterBefore(jwtRequesFilter,
+//		 UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

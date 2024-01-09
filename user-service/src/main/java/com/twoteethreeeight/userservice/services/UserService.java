@@ -1,5 +1,6 @@
 package com.twoteethreeeight.userservice.services;
 
+import com.twoteethreeeight.userservice.Dto.ProfileDto;
 import com.twoteethreeeight.userservice.models.User;
 import org.bson.types.ObjectId;
 
@@ -12,7 +13,7 @@ public interface UserService {
     String loginUser(String email, String responseCode);
     String registerUser(User user, String responseCode);
     User Authenticate(String token);
-    String updateUserByEmail(String responeCode, String email, User infoEdit);
+    String updateUserByEmail(String responeCode, ProfileDto infoEdit);
     /*This function is just for create test User and not need to reuse*/
     List<User> createTestUser();
 }

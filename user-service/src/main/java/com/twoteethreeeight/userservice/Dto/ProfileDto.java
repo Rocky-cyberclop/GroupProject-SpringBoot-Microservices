@@ -1,11 +1,11 @@
 package com.twoteethreeeight.userservice.Dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 public class ProfileDto {
 
 	private String email;
