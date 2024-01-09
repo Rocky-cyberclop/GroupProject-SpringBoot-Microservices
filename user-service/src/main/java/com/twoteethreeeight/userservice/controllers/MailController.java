@@ -1,5 +1,7 @@
 package com.twoteethreeeight.userservice.controllers;
 
+import com.twoteethreeeight.userservice.models.User;
+import com.twoteethreeeight.userservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,14 +14,25 @@ import com.twoteethreeeight.userservice.services.MailService;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/send")
 public class MailController {
 
 	@Autowired
 	private MailService mailService;
-	
-	@PostMapping("/send/{mail}")
-	public String send(@PathVariable String mail) {
+	@Autowired
+	private UserRepository userRepository;
+	@PostMapping("/register/{mail}")
+	public String sendRegister(@PathVariable String mail) {
+		User user = userRepository.findByEmail(mail);
+		if (user!= null && user.getIsRegister() == false){
+			return "Email already exists ";
+		}
+		mailService.sendMail(mail);
+		return "Send mail successfully";
+	}
+
+	@PostMapping("/login/{mail}")
+	public String sendLogin(@PathVariable String mail) {
 		mailService.sendMail(mail);
 		return "Send mail successfully";
 	}

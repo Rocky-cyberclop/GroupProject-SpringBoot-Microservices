@@ -87,12 +87,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String registerUser(User user, String responseCode) {
 		String email = user.getEmail();
+		User user1 = userRepository.findByEmail(email);
 		if (codeTmpService.validateCode(email, responseCode)) {
-			if (userRepository.existsByEmail(user.getEmail())) {
-				return "Email already exists";
-			}
-			user.setRole("User");
-			userRepository.save(user);
+//			if (userRepository.existsByEmail(user1.getEmail()) && user1.getIsRegister() == false ) {
+//				return "Email already exists";
+//			}
+			user1.setRole("User");
+			user1.setFullName(user.getFullName());
+			user1.setPhone(user.getPhone());
+			user1.setIsRegister(false);
+			user1.setCodeAuthenticate(null,null);
+			userRepository.save(user1);
 			return "Register successfully";
 		}
 		return "The authentication code is incorrect or expired ";

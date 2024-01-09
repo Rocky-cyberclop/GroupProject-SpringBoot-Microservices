@@ -47,11 +47,16 @@ public class CodeTmpService {
             user.setIsRegister(true);
             user.setCodeAuthenticate(code, expirationTime);
         }
-        else if(userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email) && user.getIsRegister() == true) {
+            user.setCodeAuthenticate(code, expirationTime);
+            userRepository.save(user);
+            System.out.println(user.getCodeAuthenticate());
+            return code;
+        }
+        if (userRepository.existsByEmail(email) && user.getIsRegister() == false) {
             user.setCodeAuthenticate(code, expirationTime);
             user.setIsRegister(false);
         }
-
         userRepository.save(user);
         return code;
     }

@@ -1,5 +1,7 @@
 package com.twoteethreeeight.userservice.services;
 
+import com.twoteethreeeight.userservice.models.User;
+import com.twoteethreeeight.userservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,16 +22,18 @@ public class MailService {
 
     @Autowired
     private CodeTmpService codeTmpService;
+    @Autowired
+    private UserRepository userRepository;
 
     public void sendMail(String mail) {
         // TODO Auto-generated method stub
+
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(mailFrom);
         simpleMailMessage.setSubject("Your Valid Code");
         String generatedCode = codeTmpService.generateCodeTmp(mail);
         simpleMailMessage.setText(generatedCode + "\nAuthenticate Code will be expired after 5 minutes");
         simpleMailMessage.setTo(mail);
-
         mailSender.send(simpleMailMessage);
     }
 
