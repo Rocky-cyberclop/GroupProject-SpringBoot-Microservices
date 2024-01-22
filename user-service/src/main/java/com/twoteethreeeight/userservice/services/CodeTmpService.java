@@ -44,41 +44,40 @@ public class CodeTmpService {
         if (user == null) {
             user = new User();
             user.setEmail(email);
-            user.setIsRegister(true);
-            user.setCodeAuthenticate(code, expirationTime);
         }
-        if (userRepository.existsByEmail(email) && user.getIsRegister() == true) {
-            user.setCodeAuthenticate(code, expirationTime);
+        if (userRepository.existsByEmail(email) /*&& user.getIsRegister() == true*/) {
+//            user.setCodeAuthenticate(code, expirationTime);
             userRepository.save(user);
-            System.out.println(user.getCodeAuthenticate());
+//            System.out.println(user.getCodeAuthenticate());
             return code;
         }
-        if (userRepository.existsByEmail(email) && user.getIsRegister() == false) {
-            user.setCodeAuthenticate(code, expirationTime);
-            user.setIsRegister(false);
-        }
+//        if (userRepository.existsByEmail(email) && user.getIsRegister() == false) {
+//            user.setCodeAuthenticate(code, expirationTime);
+//            user.setIsRegister(false);
+//        }
         userRepository.save(user);
         return code;
     }
 
     public boolean isExpirated(String email) {
 
-        User user = userRepository.findByEmail(email);
-        LocalDateTime expiratedTime = user.getCodeAuthenticate().getExpiration();
-        return LocalDateTime.now().isAfter(expiratedTime);
+//        User user = userRepository.findByEmail(email);
+//        LocalDateTime expiratedTime = user.getCodeAuthenticate().getExpiration();
+//        return LocalDateTime.now().isAfter(expiratedTime);
+        return true;
     }
 
     // kiem tra code
     public boolean validateCode(String email, String responseCode) {
-        User user = userRepository.findByEmail(email);
-        String codeTmp = user.getCodeAuthenticate().getCode();
-        // kiem tra codetmp nhap vao
-        if (codeTmp != null && codeTmp.equals(responseCode) && !isExpirated(email)) {
-            // neu dung xoa code da luu va tra ve true
-//            user.setCodeAuthenticate(null, null);
-//            userRepository.save(user);
-            return true;
-        }
+//        User user = userRepository.findByEmail(email);
+//        String codeTmp = user.getCodeAuthenticate().getCode();
+//        // kiem tra codetmp nhap vao
+//        if (codeTmp != null && codeTmp.equals(responseCode) && !isExpirated(email)) {
+//            // neu dung xoa code da luu va tra ve true
+////            user.setCodeAuthenticate(null, null);
+////            userRepository.save(user);
+//            return true;
+//        }
         return false;
     }
 

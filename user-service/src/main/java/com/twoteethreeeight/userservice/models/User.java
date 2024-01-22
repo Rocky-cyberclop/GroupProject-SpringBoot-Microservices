@@ -35,11 +35,4 @@ public class User implements Serializable {
 
     private String role;
 
-    private CodeAuthenticate codeAuthenticate;
-
-    private Boolean isRegister;
-
-    public void setCodeAuthenticate(String code, LocalDateTime expiration) {
-        this.codeAuthenticate = new CodeAuthenticate(code, expiration);
-    }
 }
