@@ -4,6 +4,7 @@ import com.twoteethreeeight.userservice.models.User;
 import com.twoteethreeeight.userservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,10 @@ public class MailService {
     @Autowired
     private UserRepository userRepository;
 
-    public void sendMail(String mail) {
+    @KafkaListener(topics = "mailTopic",groupId = "emailID")
+    public void sendMail(User  use) {
+        String mail = use.getEmail();
         // TODO Auto-generated method stub
-
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(mailFrom);
         simpleMailMessage.setSubject("Your Valid Code");
