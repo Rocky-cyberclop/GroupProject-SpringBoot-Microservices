@@ -29,7 +29,7 @@ public class MailController {
 	@PostMapping("/register/{mail}")
 	public String sendRegister(@PathVariable String mail) {
 		User user = userRepository.findByEmail(mail);
-		if (user!= null && user.getIsRegister() == false){
+		if (user!= null/* && user.getIsRegister() == false*/){
 			return "Email already exists ";
 		}
 		producerService.SendMessage(user);
