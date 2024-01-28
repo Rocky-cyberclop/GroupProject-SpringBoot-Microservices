@@ -75,7 +75,12 @@ public class ScheduleHelpers {
                 i.getFrom().getName().equals(dp) && i.getTo().getName().equals(des)
                         || i.getFrom().getName().equals(des) && i.getTo().getName().equals(dp)
         ).collect(Collectors.toList());
-        float result = ls.get(0).getEstimatedTime();
+        float result;
+        if (ls.isEmpty()) {
+            result = 0;
+        } else {
+            result = ls.get(0).getEstimatedTime();
+        }
         return result;
     }
 
