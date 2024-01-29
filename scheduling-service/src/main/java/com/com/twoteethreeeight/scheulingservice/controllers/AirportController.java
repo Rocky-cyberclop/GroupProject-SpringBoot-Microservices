@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/aiport")
+@RequestMapping("/api/v1/airport")
 public class AirportController {
     @Autowired
     private AirportService airportService;
