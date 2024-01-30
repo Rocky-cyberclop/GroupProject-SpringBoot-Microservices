@@ -72,10 +72,10 @@ public class ScheduleServices {
 
                     // get estimate time to fly
                     float ETime = scheduleHelpers.getETime(flightTimes, airports.get(i).getName(), lastDestination.getName());
-                    if (ETime == 0) {
-                        j--;
-                        continue;
-                    }
+//                    if (ETime == 0) {
+//                        j--;
+//                        continue;
+//                    }
 
                     // cal start time (+1h to prepare)
                     LocalDateTime readyTime = scheduleHelpers.calculateDate(airports.get(i).getAirplanes().get(0).getAvailableTime(), 1L);
