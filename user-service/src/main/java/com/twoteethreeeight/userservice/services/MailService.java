@@ -26,17 +26,27 @@ public class MailService {
     @Autowired
     private UserRepository userRepository;
 
-    @KafkaListener(topics = "mailTopic",groupId = "emailID")
-    public void sendMail(User  use) {
-        String mail = use.getEmail();
-        // TODO Auto-generated method stub
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom(mailFrom);
-        simpleMailMessage.setSubject("Your Valid Code");
-        String generatedCode = codeTmpService.generateCodeTmp(mail);
-        simpleMailMessage.setText(generatedCode + "\nAuthenticate Code will be expired after 5 minutes");
-        simpleMailMessage.setTo(mail);
-        mailSender.send(simpleMailMessage);
-    }
+//    @KafkaListener(topics = "mailTopic",groupId = "emailID")
+//    public void sendMail(User  use) {
+//        String mail = use.getEmail();
+//        // TODO Auto-generated method stub
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setFrom(mailFrom);
+//        simpleMailMessage.setSubject("Your Valid Code");
+//        String generatedCode = codeTmpService.generateCodeTmp(mail);
+//        simpleMailMessage.setText(generatedCode + "\nAuthenticate Code will be expired after 5 minutes");
+//        simpleMailMessage.setTo(mail);
+//        mailSender.send(simpleMailMessage);
+//    }
+@KafkaListener(topics = "mailTopic",groupId = "emailID")
+public void sendMail(String  email) {
+    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    simpleMailMessage.setFrom(mailFrom);
+    simpleMailMessage.setSubject("Your Valid Code");
+    String generatedCode = codeTmpService.generateCodeTmp(email);
+    simpleMailMessage.setText(generatedCode + "\nAuthenticate Code will be expired after 5 minutes");
+    simpleMailMessage.setTo(email);
+    mailSender.send(simpleMailMessage);
+}
 
 }
