@@ -7,6 +7,10 @@ public class CodeTmp {
 	private final String code;
 	private final LocalDateTime expirationTime;
 	
+	public LocalDateTime getExpirationTime() {
+		return expirationTime;
+	}
+
 	public CodeTmp(String code,LocalDateTime expirationTime) {
 		this.code = code;
 		this.expirationTime = expirationTime;

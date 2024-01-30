@@ -3,10 +3,12 @@ package com.twoteethreeeight.userservice.services;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import com.twoteethreeeight.userservice.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.twoteethreeeight.userservice.repositories.UserRepository;
@@ -18,6 +20,13 @@ public class CodeTmpService {
 
     @Autowired
     private UserRepository userRepository;
+
+    
+   private final StringRedisTemplate redisTemplate ;
+
+    public CodeTmpService(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     // khoi tao code
     public String initHasCode() {
@@ -37,47 +46,27 @@ public class CodeTmpService {
     }
 
     // tao moi code voi thoi gian hop le
+    @Cacheable(value = "codeTmp", key = "#email")
     public String generateCodeTmp(String email) {
         User user = userRepository.findByEmail(email);
         String code = initHasCode();
-        LocalDateTime expirationTime = initExpiratedTime();
-        if (user == null) {
-            user = new User();
-            user.setEmail(email);
-        }
-        if (userRepository.existsByEmail(email) /*&& user.getIsRegister() == true*/) {
-//            user.setCodeAuthenticate(code, expirationTime);
-            userRepository.save(user);
-//            System.out.println(user.getCodeAuthenticate());
-            return code;
-        }
-//        if (userRepository.existsByEmail(email) && user.getIsRegister() == false) {
-//            user.setCodeAuthenticate(code, expirationTime);
-//            user.setIsRegister(false);
-//        }
-        userRepository.save(user);
+        redisTemplate.opsForValue().set(email, code, 10, TimeUnit.MINUTES);
         return code;
     }
 
     public boolean isExpirated(String email) {
-
-//        User user = userRepository.findByEmail(email);
-//        LocalDateTime expiratedTime = user.getCodeAuthenticate().getExpiration();
-//        return LocalDateTime.now().isAfter(expiratedTime);
-        return true;
+//    	 String code = redisTemplate.opsForValue().get(email);
+//        return LocalDateTime.now().isAfter(timeExpirate);
+        return  true;
     }
 
     // kiem tra code
     public boolean validateCode(String email, String responseCode) {
-//        User user = userRepository.findByEmail(email);
-//        String codeTmp = user.getCodeAuthenticate().getCode();
-//        // kiem tra codetmp nhap vao
-//        if (codeTmp != null && codeTmp.equals(responseCode) && !isExpirated(email)) {
-//            // neu dung xoa code da luu va tra ve true
-////            user.setCodeAuthenticate(null, null);
-////            userRepository.save(user);
-//            return true;
-//        }
+    	String code = redisTemplate.opsForValue().get(email);
+    	if (responseCode!= null && responseCode.equals(code) ) {
+			redisTemplate.delete(email);
+			return true;
+		}
         return false;
     }
 

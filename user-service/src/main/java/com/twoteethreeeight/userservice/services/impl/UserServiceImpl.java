@@ -80,16 +80,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String registerUser(User user, String responseCode) {
 		String email = user.getEmail();
-		User user1 = userRepository.findByEmail(email);
+		User user1 = new User();
 		if (codeTmpService.validateCode(email, responseCode)) {
-//			if (userRepository.existsByEmail(user1.getEmail()) && user1.getIsRegister() == false ) {
-//				return "Email already exists";
-//			}
 			user1.setRole("User");
 			user1.setFullName(user.getFullName());
 			user1.setPhone(user.getPhone());
-//			user1.setIsRegister(false);
-//			user1.setCodeAuthenticate(null,null);
+			user1.setEmail(user.getEmail());
 			userRepository.save(user1);
 			return "Register successfully";
 		}

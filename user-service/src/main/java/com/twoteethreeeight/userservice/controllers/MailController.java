@@ -29,10 +29,10 @@ public class MailController {
 	@PostMapping("/register/{mail}")
 	public String sendRegister(@PathVariable String mail) {
 		User user = userRepository.findByEmail(mail);
-		if (user!= null/* && user.getIsRegister() == false*/){
+		if (user!= null){
 			return "Email already exists ";
 		}
-		producerService.SendMessage(user);
+		producerService.SendMessage(mail);
 //		mailService.sendMail(mail);
 		return "Send mail successfully";
 	}
@@ -40,7 +40,7 @@ public class MailController {
 	@PostMapping("/login/{mail}")
 	public String sendLogin(@PathVariable String mail) {
 		User user = userRepository.findByEmail(mail);
-		producerService.SendMessage(user);
+		producerService.SendMessage(mail);
 		return "Send mail successfully";
 	}
 }
