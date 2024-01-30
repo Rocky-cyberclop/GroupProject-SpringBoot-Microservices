@@ -1,6 +1,7 @@
 package com.com.twoteethreeeight.scheulingservice.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Document(collection = "airport")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Airport implements Serializable {

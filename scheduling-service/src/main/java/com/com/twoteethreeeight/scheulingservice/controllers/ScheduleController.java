@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,8 +28,6 @@ public class ScheduleController {
 
     @Autowired
     private ScheduleServices scheduleServices;
-    @Autowired
-    private ScheduleDao scheduleDao;
 
     @GetMapping
     public ResponseEntity<List<Schedule>> getAllSchedule() {
@@ -41,12 +40,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Schedule>> fetchScheduleByStartDes(@RequestParam("startDes") String startDes) {
-        MongoOperations template = new MongoTemplate(new SimpleMongoClientDatabaseFactory(MongoClients.create(), "scheduling-service"));
-
-        Query query = new Query();
-        query.addCriteria(Criteria.where("from.name").is("San bay quoc te Noi Bai"));
-        List<Schedule> scheduleList = template.find(query, Schedule.class);
-        return new ResponseEntity<>(scheduleList, HttpStatus.OK);
+    public ResponseEntity<List<Schedule>> fetchSchedule(@RequestParam("from") String from,
+                                                        @RequestParam("to") String to,
+                                                        @RequestParam("startTime") LocalDateTime startTime) {
+        return scheduleServices.searchSchedule(from, to, startTime);
     }
 }

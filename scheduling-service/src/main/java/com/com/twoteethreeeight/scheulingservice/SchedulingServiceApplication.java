@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class SchedulingServiceApplication implements CommandLineRunner {
+public class SchedulingServiceApplication {
 	@Autowired
 	private AirportDao airportDao;
 	@Autowired
@@ -31,15 +31,15 @@ public class SchedulingServiceApplication implements CommandLineRunner {
 		SpringApplication.run(SchedulingServiceApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		List<FlightTime> flightTimes = new ArrayList<>();
-		flightTimes.add(new FlightTime(null, airportDao.findById("659b69c79d80da5488291852").get(), airportDao.findById("659b6a59b75559343db6867b").get(), 2F));
-		flightTimes.add(new FlightTime(null, airportDao.findById("659b69c79d80da5488291852").get(), airportDao.findById("659b6ac84cec512aafec7027").get(), 4.5F));
-		flightTimes.add(new FlightTime(null, airportDao.findById("659b69c79d80da5488291852").get(), airportDao.findById("659b6b0780bcc36f14293b28").get(), 6F));
-		flightTimes.add(new FlightTime(null, airportDao.findById("659b6a59b75559343db6867b").get(), airportDao.findById("659b6ac84cec512aafec7027").get(), 4F));
-		flightTimes.add(new FlightTime(null, airportDao.findById("659b6a59b75559343db6867b").get(), airportDao.findById("659b6b0780bcc36f14293b28").get(), 5.5F));
-		flightTimes.add(new FlightTime(null, airportDao.findById("659b6ac84cec512aafec7027").get(), airportDao.findById("659b6b0780bcc36f14293b28").get(), 3F));
-		flightTimeDao.saveAll(flightTimes);
-	}
+//	@Override
+//	public void run(String... args) throws Exception {
+//		List<FlightTime> flightTimes = new ArrayList<>();
+//		flightTimes.add(new FlightTime(null, airportDao.findById("659b69c79d80da5488291852").get(), airportDao.findById("659b6a59b75559343db6867b").get(), 2F));
+//		flightTimes.add(new FlightTime(null, airportDao.findById("659b69c79d80da5488291852").get(), airportDao.findById("659b6ac84cec512aafec7027").get(), 4.5F));
+//		flightTimes.add(new FlightTime(null, airportDao.findById("659b69c79d80da5488291852").get(), airportDao.findById("659b6b0780bcc36f14293b28").get(), 6F));
+//		flightTimes.add(new FlightTime(null, airportDao.findById("659b6a59b75559343db6867b").get(), airportDao.findById("659b6ac84cec512aafec7027").get(), 4F));
+//		flightTimes.add(new FlightTime(null, airportDao.findById("659b6a59b75559343db6867b").get(), airportDao.findById("659b6b0780bcc36f14293b28").get(), 5.5F));
+//		flightTimes.add(new FlightTime(null, airportDao.findById("659b6ac84cec512aafec7027").get(), airportDao.findById("659b6b0780bcc36f14293b28").get(), 3F));
+//		flightTimeDao.saveAll(flightTimes);
+//	}
 }
