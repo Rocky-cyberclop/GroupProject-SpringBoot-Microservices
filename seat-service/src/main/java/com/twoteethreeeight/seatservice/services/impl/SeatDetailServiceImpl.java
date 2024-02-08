@@ -65,4 +65,9 @@ public class SeatDetailServiceImpl implements SeatDetailService {
         seatDetail.getSeat().setStatus(Status.BOOKED);
         seatDetailRepository.save(seatDetail);
     }
+
+    @Override
+    public List<SeatDetail> getAll() {
+        return seatDetailRepository.findAll();
+    }
 }

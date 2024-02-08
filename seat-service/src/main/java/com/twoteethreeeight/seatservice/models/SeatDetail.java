@@ -7,13 +7,15 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
+
 @Document("seat_detail")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeatDetail {
+public class SeatDetail implements Serializable {
     @Id
-    private ObjectId _id;
+    private String _id;
 
     private ObjectId scheduleId;
 
