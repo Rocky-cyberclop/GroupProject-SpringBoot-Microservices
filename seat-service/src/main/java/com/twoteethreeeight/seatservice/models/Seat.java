@@ -9,12 +9,14 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Seat {
+public class Seat implements Serializable {
     @Id
-    private ObjectId _id;
+    private String _id;
 
     private Class aClass;
 
