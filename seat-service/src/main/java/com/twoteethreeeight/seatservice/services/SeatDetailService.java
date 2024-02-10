@@ -1,7 +1,9 @@
 package com.twoteethreeeight.seatservice.services;
 
 import com.twoteethreeeight.seatservice.models.SeatDetail;
+
 import org.bson.types.ObjectId;
+
 
 import java.util.List;
 
@@ -20,4 +22,5 @@ public interface SeatDetailService {
     List<SeatDetail> seatDetailsByScheduleId(ObjectId scheduleId);
 
     void listenSeatTopic(List<SeatDetail> detailList);
+
 }

@@ -111,4 +111,5 @@ public class SeatDetailServiceImpl implements SeatDetailService {
         System.out.println(detailList);
         simpMessagingTemplate.convertAndSend("/topic/seatTopic", detailList);
     }
+
 }

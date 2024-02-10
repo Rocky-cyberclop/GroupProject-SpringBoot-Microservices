@@ -1,5 +1,6 @@
 package com.twoteethreeeight.seatservice.controllers;
 
+
 import com.twoteethreeeight.seatservice.services.impl.SeatDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -32,4 +33,5 @@ public class SeatDetailController {
     public ResponseEntity<?> getAllSeats(@RequestParam("id") String idSchedule){
         return new ResponseEntity<>(seatDetailService.seatDetailsByScheduleId(new ObjectId(idSchedule)), HttpStatus.OK);
     }
+
 }
