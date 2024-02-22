@@ -1,15 +1,9 @@
 package com.com.twoteethreeeight.scheulingservice.services;
 
-import com.com.twoteethreeeight.scheulingservice.dao.AirplaneDao;
-import com.com.twoteethreeeight.scheulingservice.dao.AirportDao;
-import com.com.twoteethreeeight.scheulingservice.dao.FlightTimeDao;
-import com.com.twoteethreeeight.scheulingservice.dao.ScheduleDao;
+import com.com.twoteethreeeight.scheulingservice.dao.*;
 import com.com.twoteethreeeight.scheulingservice.dto.ResultDateWithIndex;
 import com.com.twoteethreeeight.scheulingservice.helpers.ScheduleHelpers;
-import com.com.twoteethreeeight.scheulingservice.models.Airplane;
-import com.com.twoteethreeeight.scheulingservice.models.Airport;
-import com.com.twoteethreeeight.scheulingservice.models.FlightTime;
-import com.com.twoteethreeeight.scheulingservice.models.Schedule;
+import com.com.twoteethreeeight.scheulingservice.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +30,22 @@ public class ScheduleServices {
     @Autowired
     private AirplaneDao airplaneDao;
 
+    @Autowired
+    private ScheduleSateDao scheduleSateDao;
+
     public ResponseEntity<String> doSchedule(String startDate, String endDate) {
         LocalDateTime startDateParse = scheduleHelpers.transperStrToLocalDateTime(startDate);
         LocalDateTime endDateParse = scheduleHelpers.transperStrToLocalDateTime(endDate);
         if (scheduleHelpers.compareTwoDates(startDateParse, endDateParse)) {
             return new ResponseEntity<>("The start date cannot be greater than the end date.", HttpStatus.OK);
+        }
+
+        List<ScheduleState> listScheduleState = scheduleSateDao.findAll();
+        if (!listScheduleState.isEmpty()) {
+            ScheduleState scheduleState = listScheduleState.get(listScheduleState.size() - 1);
+            if (startDateParse.isBefore(scheduleState.getLastScheduledTime())) {
+                return new ResponseEntity<>("The start date cannot be smaller than the last scheduled date.", HttpStatus.OK);
+            }
         }
         List<Schedule> scheduleList = new ArrayList<>();
         List<Airport> airports = airportDao.findAll();
@@ -135,6 +140,11 @@ public class ScheduleServices {
                 if (breakPoint == 1) break;
             }
         }
+
+        ScheduleState newScheduleState = new ScheduleState();
+        newScheduleState.setLastScheduledTime(endDateParse);
+        newScheduleState.setTotalSchedules(scheduleList.size());
+        scheduleSateDao.save(newScheduleState);
 
         List<Airplane> airplanes = new ArrayList<>();
         airports.forEach(airport -> {
