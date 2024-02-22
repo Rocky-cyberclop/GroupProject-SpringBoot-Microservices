@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/flight-time")
+@RequestMapping("/api/v1/schedule/flight-time")
 public class FlightTimeController {
 
     @Autowired
