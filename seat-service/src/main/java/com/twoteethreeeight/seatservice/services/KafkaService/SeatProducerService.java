@@ -1,6 +1,5 @@
 package com.twoteethreeeight.seatservice.services.KafkaService;
 
-import com.twoteethreeeight.seatservice.models.Seat;
 import com.twoteethreeeight.seatservice.models.SeatDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
