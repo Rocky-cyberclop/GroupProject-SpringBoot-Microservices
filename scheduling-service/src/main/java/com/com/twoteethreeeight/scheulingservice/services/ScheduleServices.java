@@ -3,6 +3,7 @@ package com.com.twoteethreeeight.scheulingservice.services;
 import com.com.twoteethreeeight.scheulingservice.dao.*;
 import com.com.twoteethreeeight.scheulingservice.dto.ResultDateWithIndex;
 import com.com.twoteethreeeight.scheulingservice.helpers.ScheduleHelpers;
+import com.com.twoteethreeeight.scheulingservice.kafka.JsonKafkaProducer;
 import com.com.twoteethreeeight.scheulingservice.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,9 @@ public class ScheduleServices {
 
     @Autowired
     private ScheduleSateDao scheduleSateDao;
+
+    @Autowired
+    private JsonKafkaProducer jsonKafkaProducer;
 
     public ResponseEntity<String> doSchedule(String startDate, String endDate) {
         LocalDateTime startDateParse = scheduleHelpers.transperStrToLocalDateTime(startDate);
@@ -153,7 +157,8 @@ public class ScheduleServices {
 
         airplaneDao.saveAll(airplanes);
         airportDao.saveAll(airports);
-        scheduleDao.saveAll(scheduleList);
+        List<Schedule> listScheduleSaved = scheduleDao.saveAll(scheduleList);
+//        listScheduleSaved.forEach(schedule -> jsonKafkaProducer.sendSeatGenerateRequest(schedule.getId()));
 
         return new ResponseEntity<>("Scheduling successfully!", HttpStatus.OK);
     }
@@ -163,7 +168,8 @@ public class ScheduleServices {
     }
 
     public ResponseEntity<List<Schedule>> searchSchedule(String from, String to, LocalDateTime startTime) {
-        List<Schedule> scheduleList = scheduleDao.searchSchedule(from, to, startTime);
+        LocalDateTime startTime2 = startTime.plusDays(1L);
+        List<Schedule> scheduleList = scheduleDao.searchSchedule(from, to, startTime, startTime2);
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);
     }
 }
