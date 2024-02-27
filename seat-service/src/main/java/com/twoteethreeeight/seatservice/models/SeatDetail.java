@@ -1,5 +1,7 @@
 package com.twoteethreeeight.seatservice.models;
 
+import com.twoteethreeeight.seatservice.enums.Class;
+import com.twoteethreeeight.seatservice.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +21,7 @@ public class SeatDetail implements Serializable {
 
     private ObjectId scheduleId;
 
-    private Seat seat;
+    private Class aClass;
+
+    private Status status;
 }
