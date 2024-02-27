@@ -15,9 +15,12 @@ public class MyRouteConfig {
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("media-service", predicateSpec ->
+                .route("scheduling-service", predicateSpec ->
                         predicateSpec.path("/api/v1/schedule/**")
                                 .uri("lb://scheduling-service"))
+                .route("user-service", predicateSpec ->
+                        predicateSpec.path("/api/v1/user/**")
+                                .uri("lb://user-service"))
                 .build();
     }
 }
