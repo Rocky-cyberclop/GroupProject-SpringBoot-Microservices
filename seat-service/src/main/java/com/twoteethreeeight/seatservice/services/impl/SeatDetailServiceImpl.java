@@ -29,7 +29,7 @@ public class SeatDetailServiceImpl implements SeatDetailService {
 
     //This function for testing prupose and can be removed with no erro
     @Override
-    @Bean
+//    @Bean
     public void generateTestSeatDetail() {
         List<SeatDetail> seatDetails = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
