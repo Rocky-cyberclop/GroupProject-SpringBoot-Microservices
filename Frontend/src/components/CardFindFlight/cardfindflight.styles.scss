@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+.card-header{
+    background-color: $primary-color;
+    color: white;
+}
+.card-body{
+    .arrow-icon{
+        margin: 20px 20px;
+    }
+
+    .input-item{
+        width: 20rem;
+    }
+
+    .dayDeparture{
+        margin: 0 20px;
+    }
+}

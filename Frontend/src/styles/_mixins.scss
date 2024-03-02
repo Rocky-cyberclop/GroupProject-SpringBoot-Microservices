@@ -1,0 +1,11 @@
+@mixin button($bg-color) {
+    background-color: $bg-color;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px lighten($bg-color, 20%);
+    }
+  }

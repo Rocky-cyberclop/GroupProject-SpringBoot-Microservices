@@ -1,0 +1,42 @@
+@import '../../../styles/variables';
+
+.header{
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px  rgb(174, 171, 196) solid;
+}
+.logo{
+    img {
+        max-width: 250px;
+    }
+
+}
+.navigaton{
+    .navbar-list{      
+        display: flex;
+        margin: 0px;
+    }
+    .navbar-account{
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+        button{
+            margin-right: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    }
+    .navbar-item{
+        align-items: center;
+        font-size: 18px;
+        text-decoration: none;
+        list-style: none;
+        padding: 15px;
+        height: fit-content;
+        color: $primary-color;
+        font-weight: 600;
+        &:hover{
+            color: rgb(58, 162, 10);
+        }
+    }
+}
