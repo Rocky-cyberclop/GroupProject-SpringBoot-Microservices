@@ -1,0 +1,21 @@
+@import '../../styles/variables';
+.register-title{
+    display: flex;
+    justify-content: space-between;
+    text-align: center !important;
+    background-color: $primary-color;
+    color: white;
+    padding: 10px;
+    .register-text{
+        margin-left: 170px;
+    }
+    .register-close{
+        cursor: pointer;
+    }
+}
+.register-body{
+    padding: 20px;
+}
+.input-email{
+    width: 100%;
+}

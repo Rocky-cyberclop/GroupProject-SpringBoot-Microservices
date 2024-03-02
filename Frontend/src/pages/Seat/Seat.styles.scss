@@ -1,0 +1,166 @@
+@import "../../styles/mixins";
+
+.mycontainer {
+  width: 60%;
+}
+
+.noteSeatClass-body {
+  ul {
+    display: flex;
+    justify-content: space-evenly;
+
+    li {
+      text-align: center;
+      display: flex;
+      list-style: none;
+
+      span {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.noteSeatClass-header {
+  text-align: center;
+  margin: 30px 0;
+
+  h6 {
+    font-size: 24px;
+  }
+}
+
+.businessSeat {
+  @include button(red);
+}
+
+.deluxeSeat {
+  @include button(yellow);
+}
+
+.basicSeat {
+  @include button(green);
+}
+
+.seating {
+  @include button(rgb(0, 128, 255));
+}
+
+.seated {
+  @include button(grey);
+}
+
+.airplaneHead {
+  display: flex;
+  justify-content: space-between;
+}
+
+.windows {
+  display: flex;
+  justify-content: space-between;
+
+  .windowUp {
+    display: flex;
+    text-align: center;
+
+    div {
+      border: 2px solid rgb(188, 188, 188);
+    }
+
+    p {
+      margin: 0 10px;
+    }
+
+    i {
+      color: gray;
+      margin-top: 4px;
+    }
+
+    .left {
+      margin-left: -21px;
+    }
+
+    .right {
+      margin-right: -21px;
+    }
+  }
+}
+
+.airplaneBody {
+  border: 6px solid rgb(209, 209, 209);
+  border-bottom: none;
+  border-top: none;
+}
+
+.wall {
+  display: flex;
+  justify-content: space-between;
+  .wall-left,
+  .wall-right {
+    border: 3px solid rgb(209, 209, 209);
+    height: 6px;
+    width: 170px;
+  }
+  .wall-left {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  .wall-right {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+}
+
+.leterSeat {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  .leterSeat-left {
+    width: 100%;
+    ul {
+      display: flex;
+      justify-content: space-evenly;
+      padding: 0;
+      margin-left: 30px;
+      flex-wrap: wrap;
+      li {
+        list-style: none;
+        margin-right: 30px;
+        // width: 9%;
+      }
+    }
+  }
+}
+
+.leterSeatC {
+  margin-right: 80px !important;
+}
+
+.list-seat {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0 0 60px;
+    justify-content: space-evenly;
+    li {
+      list-style: none;
+      margin-right: 30px;
+      width: 9%;
+      padding: 0 0 20px 18px;
+    }
+  }
+}
+
+.planeWing {
+  display: flex;
+  position: absolute;
+  z-index: -1000;
+  justify-content: space-between;
+  .planeWing-left {
+    margin-left: -260px;
+  }
+  .planeWing-right {
+    margin-right: -260px;
+    margin-left: 777px;
+  }
+}
