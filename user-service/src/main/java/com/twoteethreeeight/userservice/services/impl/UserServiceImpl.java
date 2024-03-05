@@ -8,6 +8,8 @@ import com.twoteethreeeight.userservice.services.CodeTmpService;
 import com.twoteethreeeight.userservice.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,18 @@ public class UserServiceImpl implements UserService {
 		userRepository.saveAll(users);
 		return users;
 	}
+
+	@Override
+	public ResponseEntity<String> editUserInfo(String email, ProfileDto infoEdit) {
+//		System.out.println(infoEdit.toString());
+		User user = userRepository.findByEmail(email);
+		user.setPhone(infoEdit.getPhone());
+		user.setFullName(infoEdit.getFullName());
+		userRepository.save(user);
+
+		return new ResponseEntity<>("Edit user info successfully!", HttpStatus.OK);
+	}
+
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
 

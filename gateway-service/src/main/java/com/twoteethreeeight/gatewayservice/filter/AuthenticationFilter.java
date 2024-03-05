@@ -68,9 +68,10 @@ public class AuthenticationFilter implements GatewayFilter {
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         Claims claims = jwtService.extractAllClaims(token);
+        System.out.println(jwtService.extractUsername(token));
         exchange.getRequest().mutate()
-                .header("username", String.valueOf(jwtService.extractUsername(token)))
-                .header("roles", String.valueOf(claims.get("roles")))
+                .header("email", String.valueOf(jwtService.extractUsername(token)))
+//                .header("roles", String.valueOf(claims.get("roles")))
                 .build();
     }
 }

@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
+import io.jsonwebtoken.io.Decoders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +34,13 @@ import io.jsonwebtoken.security.Keys;
 public class JWTTokenUtil {
 
 	public static final long JWT_TOKEN_VALIDITY = 3600;
+	 private static final Key SECRET_KEY = myGetSecretKey();
 
-	 private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+	 public static Key myGetSecretKey() {
+		byte[] keyBytes = Decoders.BASE64.decode("f6d3d7289d940ce9dbfacaf37d282a3eae68ab562e659674efa900d627889697");
+		Key sk = new SecretKeySpec(keyBytes, "HmacSHA256");
+		return sk;
+	}
 
 	
 	@Value("${jwt.secrect}")
