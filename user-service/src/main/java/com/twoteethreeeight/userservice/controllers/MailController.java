@@ -15,7 +15,7 @@ import com.twoteethreeeight.userservice.services.MailService;
 
 
 @RestController
-@RequestMapping("/send")
+@RequestMapping("/api/v1/user/send")
 public class MailController {
 
 	@Autowired

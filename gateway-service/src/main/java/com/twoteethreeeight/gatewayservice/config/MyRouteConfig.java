@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.annotation.Configuration;
 
+import static org.springframework.cloud.gateway.route.builder.RouteDslKt.filters;
+
 @Configuration
 public class MyRouteConfig {
     @Autowired
@@ -20,6 +22,7 @@ public class MyRouteConfig {
                                 .uri("lb://scheduling-service"))
                 .route("user-service", predicateSpec ->
                         predicateSpec.path("/api/v1/user/**")
+                                .filters(f -> f.filter(authenticationFilter))
                                 .uri("lb://user-service"))
                 .build();
     }

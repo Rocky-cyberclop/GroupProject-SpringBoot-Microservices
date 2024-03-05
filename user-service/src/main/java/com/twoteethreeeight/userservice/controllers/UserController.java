@@ -103,4 +103,9 @@ public class UserController {
 		}
 	}
 
+	@PutMapping("/edit")
+	public ResponseEntity<String> editUserInfo(@RequestHeader("email") String email, @RequestBody ProfileDto infoEdit) {
+			return userService.editUserInfo(email, infoEdit);
+	}
+
 }
