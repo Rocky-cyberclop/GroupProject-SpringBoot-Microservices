@@ -19,3 +19,19 @@
 .input-email{
     width: 100%;
 }
+
+.confirm-title{
+    display: flex;
+    justify-content: space-between;
+    text-align: center !important;
+    background-color: $primary-color;
+    color: white;
+    padding: 10px;
+    .confirm-iconback{
+        margin-top: 5px;
+        cursor: pointer;
+    }
+    .confirm-close{
+        cursor: pointer;
+    }
+}
