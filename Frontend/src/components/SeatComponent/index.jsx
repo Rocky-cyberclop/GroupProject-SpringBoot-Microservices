@@ -1,42 +1,7 @@
-import { useState } from "react";
 import "./seatComponent.style.scss";
 import { bookingSeat } from "../../service/SeatServices";
 function SeatComponent(props) {
-  const [status, setStatus] = useState(false);
   let seat;
-  //   switch (props.level) {
-  //     case "BUSINESS":
-  //       seat = (
-  //         <img
-  //           src="https://www.vietjetair.com/static/media/favorite-seat_red.d20dbda6.svg"
-  //           alt=""
-  //         />
-  //       );
-  //       break;
-  //     case "DELUXE":
-  //       seat = (
-  //         <img
-  //           src="https://www.vietjetair.com/static/media/favorite-seat_yellow.0c9d67ed.svg"
-  //           alt=""
-  //         />
-  //       );
-  //       break;
-  //     case "CLASSIC":
-  //       seat = (
-  //         <img
-  //           src="https://www.vietjetair.com/static/media/favorite-seat_green.803a88c3.svg"
-  //           alt=""
-  //         />
-  //       );
-  //     default:
-  //       seat = (
-  //         <img
-  //           src="https://www.vietjetair.com/static/media/favorite-seat_green.803a88c3.svg"
-  //           alt=""
-  //         />
-  //       );
-  //   }
-
   switch (props.status) {
     case "BOOKING":
       seat = (
@@ -72,6 +37,7 @@ function SeatComponent(props) {
                 alt=""
               />
             );
+            break;
           default:
             seat = (
               <img
