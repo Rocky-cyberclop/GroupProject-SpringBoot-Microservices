@@ -17,15 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class SchedulingServiceApplication {
-	@Autowired
-	private AirportDao airportDao;
-	@Autowired
-	private AirplaneDao airplaneDao;
-	@Autowired
-	private ScheduleHelpers scheduleHelpers;
-	@Autowired
-	private FlightTimeDao flightTimeDao;
+public class SchedulingServiceApplication{
+//	@Autowired
+//	private AirportDao airportDao;
+//	@Autowired
+//	private AirplaneDao airplaneDao;
+//	@Autowired
+//	private ScheduleHelpers scheduleHelpers;
+//	@Autowired
+//	private FlightTimeDao flightTimeDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SchedulingServiceApplication.class, args);

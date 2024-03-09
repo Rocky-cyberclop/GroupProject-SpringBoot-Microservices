@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import DropdownMenu from '../../components/DropdownMenu/DropdownMenu';
-import { DropdownMenuProfileData } from '../../Data/DropdownMenuProfileData';
+import { DropdownMenuProfileData } from '../../data/DropdownMenuProfileData';
 import ProfileDetail from './ProfileDetail';
 // import { useSelector } from 'react-redux';
 
