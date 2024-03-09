@@ -4,17 +4,16 @@ import com.twoteethreeeight.userservice.models.User;
 import com.twoteethreeeight.userservice.repositories.UserRepository;
 import com.twoteethreeeight.userservice.services.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.twoteethreeeight.userservice.Dto.MailStructure;
 import com.twoteethreeeight.userservice.services.MailService;
 
+import java.util.Map;
+
 
 @RestController
+//@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/user/send")
 public class MailController {
 
@@ -26,15 +25,15 @@ public class MailController {
 	@Autowired
 	private ProducerService producerService;
 
-	@PostMapping("/register/{mail}")
-	public String sendRegister(@PathVariable String mail) {
-		User user = userRepository.findByEmail(mail);
+	@PostMapping("/register")
+	public boolean sendRegister(@RequestBody Map<String,Object> result) {
+		User user = userRepository.findByEmail(result.get("email").toString());
 		if (user!= null){
-			return "Email already exists ";
+			return false;
 		}
-		producerService.SendMessage(mail);
+		producerService.SendMessage(result.get("email").toString());
 //		mailService.sendMail(mail);
-		return "Send mail successfully";
+		return true;
 	}
 
 	@PostMapping("/login/{mail}")

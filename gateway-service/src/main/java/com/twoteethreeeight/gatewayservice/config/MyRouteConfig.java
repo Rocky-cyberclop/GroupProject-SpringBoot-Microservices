@@ -22,7 +22,10 @@ public class MyRouteConfig {
                                 .uri("lb://scheduling-service"))
                 .route("user-service", predicateSpec ->
                         predicateSpec.path("/api/v1/user/**")
-                                .filters(f -> f.filter(authenticationFilter))
+                                .filters(f -> f
+                                        .rewritePath("/api/v1/user/send//(?<segment>.*)", "//${segment}")
+                                        .rewritePath("/api/v1/user//(?<segment>.*)", "//${segment}")
+                                        .filter(authenticationFilter))
                                 .uri("lb://user-service"))
                 .build();
     }
