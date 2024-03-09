@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+//@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/user")
 public class UserController {
 	@Autowired
@@ -56,16 +57,9 @@ public class UserController {
 	}
 
 	@PostMapping("register")
-	public ResponseEntity<String> registerUser(@RequestBody User user, @RequestParam String responseCode) {
-		String result = userService.registerUser(user, responseCode);
-
-		if (result.equals("Register successfully")) {
-			return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-		} else if (result.equals("Email already exists")) {
-			return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
-		} else {
-			return new ResponseEntity<>("The authentication code is incorrect or expired", HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<?> registerUser(@RequestBody Map<String, Object> request) {
+		boolean result = userService.registerUser(request.get("email").toString(), request.get("code").toString());
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@GetMapping("info")

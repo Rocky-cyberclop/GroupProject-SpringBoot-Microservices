@@ -12,7 +12,7 @@ public interface UserService {
     Optional<User> getUserById(ObjectId objectId);
     List<User> getAllUser();
     String loginUser(String email, String responseCode);
-    String registerUser(User user, String responseCode);
+    boolean registerUser(String email, String responseCode);
     User Authenticate(String token);
     String updateUserByEmail(String responeCode, ProfileDto infoEdit);
     /*This function is just for create test User and not need to reuse*/

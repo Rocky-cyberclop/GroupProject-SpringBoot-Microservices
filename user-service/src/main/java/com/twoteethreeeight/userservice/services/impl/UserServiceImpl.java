@@ -92,18 +92,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String registerUser(User user, String responseCode) {
-		String email = user.getEmail();
-		User user1 = new User();
+	public boolean registerUser(String email, String responseCode) {
 		if (codeTmpService.validateCode(email, responseCode)) {
-			user1.setRole("User");
-			user1.setFullName(user.getFullName());
-			user1.setPhone(user.getPhone());
-			user1.setEmail(user.getEmail());
-			userRepository.save(user1);
-			return "Register successfully";
+			return true;
 		}
-		return "The authentication code is incorrect or expired ";
+		return false;
 	}
 
 	@Override
