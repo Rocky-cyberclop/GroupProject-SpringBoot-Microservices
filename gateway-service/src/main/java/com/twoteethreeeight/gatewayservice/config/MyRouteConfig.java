@@ -19,6 +19,7 @@ public class MyRouteConfig {
         return builder.routes()
                 .route("scheduling-service", predicateSpec ->
                         predicateSpec.path("/api/v1/schedule/**")
+                                .filters(f-> f.rewritePath("/api/v1/schedule//(?<segment>.*)", "//${segment}"))
                                 .uri("lb://scheduling-service"))
                 .route("user-service", predicateSpec ->
                         predicateSpec.path("/api/v1/user/**")

@@ -5,14 +5,18 @@ import com.com.twoteethreeeight.scheulingservice.dto.ResultDateWithIndex;
 import com.com.twoteethreeeight.scheulingservice.helpers.ScheduleHelpers;
 import com.com.twoteethreeeight.scheulingservice.kafka.JsonKafkaProducer;
 import com.com.twoteethreeeight.scheulingservice.models.*;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ScheduleServices {
@@ -37,6 +41,45 @@ public class ScheduleServices {
     @Autowired
     private JsonKafkaProducer jsonKafkaProducer;
 
+    public static Airport getNexDestination(String currentDes, List<String> listDes, List<Airport> airports) {
+        if (currentDes.isEmpty()) {
+            int indexResult = 0;
+            for (int i = 0; i < airports.size(); i++) {
+                if (airports.get(i).getName().equals(listDes.get(0))) {
+                    indexResult = i;
+                    break;
+                }
+            }
+            return airports.get(indexResult);
+        }
+
+        String nexDes = "";
+        int nextDesIndex = 0;
+        for (int i = 0; i < listDes.size(); i++) {
+            if (currentDes.equals(listDes.get(0))) {
+                nextDesIndex = i;
+                break;
+            }
+        }
+
+        if (nextDesIndex + 1 < listDes.size() - 1) {
+            nextDesIndex+=1;
+        } else {
+            nextDesIndex = 0;
+        }
+
+        Airport result = new Airport();
+        int resultIndex = 0;
+        for (int i = 0; i < airports.size(); i++) {
+            if (airports.get(i).getName().equals(listDes.get(nextDesIndex))) {
+                resultIndex = i;
+                break;
+            }
+        }
+
+        return airports.get(resultIndex);
+    }
+
     public ResponseEntity<String> doSchedule(String startDate, String endDate) {
         LocalDateTime startDateParse = scheduleHelpers.transperStrToLocalDateTime(startDate);
         LocalDateTime endDateParse = scheduleHelpers.transperStrToLocalDateTime(endDate);
@@ -53,6 +96,7 @@ public class ScheduleServices {
         }
         List<Schedule> scheduleList = new ArrayList<>();
         List<Airport> airports = airportDao.findAll();
+        List<ListDes> listDestinations = new ArrayList<>();
 
         // update start time to schedule
         airports.forEach(airport -> {
@@ -63,6 +107,21 @@ public class ScheduleServices {
             airport.getRunways().forEach(runway -> {
                 runway.setAvailableTime(startDateParse);
             });
+
+            List<FlightTime> flightTimes = flightTimeDao.getListFlightTimeFromOneAirport(new ObjectId(airport.getId()));
+            ListDes listDes1 = new ListDes();
+            listDes1.setName(airport.getName());
+            Set<String> thisAirportListDes = new HashSet<>();
+            flightTimes.forEach(flightTime -> {
+                if (!flightTime.getFrom().getName().equals(airport.getName())) {
+                    thisAirportListDes.add(flightTime.getFrom().getName());
+                }
+                if (!flightTime.getTo().getName().equals(airport.getName())) {
+                    thisAirportListDes.add(flightTime.getTo().getName());
+                }
+            });
+            listDes1.setListDestination(new ArrayList<String>(thisAirportListDes));
+            listDestinations.add(listDes1);
         });
 
         List<FlightTime> flightTimes = flightTimeDao.findAll();
@@ -77,7 +136,8 @@ public class ScheduleServices {
 
                     // find the next destination
                     lastDestination =
-                            scheduleHelpers.calculateLastDestination(totalAirport, lastDestination.getName(), airports.get(i).getName(), airports);
+                            getNexDestination(lastDestination.getName(), listDestinations.get(i).getListDestination(), airports);
+//                            scheduleHelpers.calculateLastDestination(totalAirport, lastDestination.getName(), airports.get(i).getName(), airports);
 
                     // get estimate time to fly
                     float ETime = scheduleHelpers.getETime(flightTimes, airports.get(i).getName(), lastDestination.getName());
